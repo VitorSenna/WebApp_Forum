@@ -1,11 +1,11 @@
 type EquipeConstructor = {
-id: number
+  id?: number
   nome: string
   descricao: string
 }
 
 export class Equipe {
-  id: number
+  id?: number
   nome: string
   descricao: string
 

@@ -2,7 +2,6 @@ import { Sequelize } from 'sequelize'
 import env from '../main/config/env'
 import fg from 'fast-glob'
 
-
 export const sequelize = new Sequelize({
   dialect: 'mysql',
   host: env.dbHost,
