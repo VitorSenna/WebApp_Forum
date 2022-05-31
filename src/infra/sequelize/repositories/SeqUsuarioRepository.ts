@@ -10,7 +10,7 @@ export class SeqUsuarioRepository implements IUsuarioRepository {
       nome: usuario.nome,
       senha: usuario.senha,
       sobrenome: usuario.sobrenome,
-      username: usuario.sobrenome
+      username: usuario.username
     })
 
     return !!data
@@ -67,5 +67,21 @@ export class SeqUsuarioRepository implements IUsuarioRepository {
     const usuario = new Usuario(usuarioModel)
 
     return usuario
+  }
+
+  async delete (id: number): Promise<void> {
+    await UsuarioModel.destroy({
+      where: {
+        id
+      }
+    })
+  }
+
+  async update (usuario: Usuario): Promise<void> {
+    await UsuarioModel.update({ ...usuario }, {
+      where: {
+        id: usuario.id
+      }
+    })
   }
 }

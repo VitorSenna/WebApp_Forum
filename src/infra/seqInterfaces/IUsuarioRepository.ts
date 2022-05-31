@@ -7,4 +7,7 @@ export interface IUsuarioRepository{
     findUsuarioByUserName(username: string): Promise<Usuario>
     findAll(): Promise<Usuario[]>
     findById(id: number): Promise<Usuario>
+
+    delete(id: number): Promise<void>
+    update(usuario: Usuario): Promise<void>
 }
