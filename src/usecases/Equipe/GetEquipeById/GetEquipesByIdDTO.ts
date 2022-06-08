@@ -1,4 +1,4 @@
-export type ListEquipesDTO = {
+export type GetEquipeByIdDTO = {
     id: number
     nome: string
     descricao: string

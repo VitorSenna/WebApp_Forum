@@ -9,7 +9,6 @@ export class ListUsuariosUseCase {
 
     return usuarios.map(usuario => {
       return {
-        ...usuario,
         id: usuario.id,
         dataCadastro: usuario.dataCadastro,
         email: usuario.email,
