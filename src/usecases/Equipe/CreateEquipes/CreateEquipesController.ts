@@ -9,12 +9,12 @@ export class CreateEquipesController implements Controller {
 
   async handle (req: Request, res: Response): Promise<Response> {
     try {
-      await this.createEquipesUseCase.execute({ ...req.body })
+      await this.createEquipesUseCase.execute({ ...req.body, idUser: req.idUser })
 
       return res.status(201).json({ message: 'ok' })
     } catch (error) {
       if (error instanceof TypedErrors) return res.status(400).json(error)
-      return res.status(500).json({ message: 'server error' })
+      return res.status(500).json(error)
     }
   }
 }

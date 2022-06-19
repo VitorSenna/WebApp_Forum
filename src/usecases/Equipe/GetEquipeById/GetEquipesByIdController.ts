@@ -9,15 +9,17 @@ export class GetEquipesByIdController implements Controller {
 
   async handle (req: Request, res: Response): Promise<Response> {
     try {
-      const id = Number(req.params.id)
-      if (!id) return res.status(400).json({ message: `Invalid Param: ${id}` })
+      const idEquipe = Number(req.params.id)
+      if (!idEquipe) return res.status(400).json({ message: `Invalid Param: ${idEquipe}` })
 
-      const equipe = await this.getEquipeByIdUseCase.execute(id)
+      const idUser = req.idUser
+
+      const equipe = await this.getEquipeByIdUseCase.execute({ idEquipe, idUser })
 
       return res.status(200).json({ equipe })
     } catch (error) {
       if (error instanceof TypedErrors) return res.status(400).json(error)
-      return res.status(500).json({ message: 'server error' })
+      return res.status(500).json(error)
     }
   }
 }

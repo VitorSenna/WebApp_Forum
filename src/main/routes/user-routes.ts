@@ -14,9 +14,3 @@ export = (router: Router) => {
   router.delete(`${BASE_URL}/:id`, (req, res) => deleteUsuarioController.handle(req, res))
   router.put(`${BASE_URL}/:id`, (req, res) => updateUsuariosController.handle(req, res))
 }
-
-// const routerUser = Router()
-
-// routerUser.post('/users', (req, res) => createUsuarioController.handle(req, res))
-
-// export default routerUser

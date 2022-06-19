@@ -9,8 +9,8 @@ export class CreateUsuarioController implements Controller {
 
   async handle (req: Request, res: Response): Promise<Response> {
     try {
+      // console.log(req.usuario.id)
       await this.createUsuarioUseCase.execute(req.body)
-
       return res.status(201).json({})
     } catch (error) {
       console.log(error)

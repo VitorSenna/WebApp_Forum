@@ -1,29 +1,55 @@
 import { Equipe } from '../../../entities/Equipe'
 import { IEquipeRepository } from '../../seqInterfaces/IEquipeRepository'
 import { EquipeModel } from '../models/Equipe-model'
+import { UsuarioModel } from '../models/Usuario-model'
+import { UsuarioEquipeModel } from '../models/UsuarioEquipe-model'
+import { SeqUsuarioRepository } from './SeqUsuarioRepository'
 
 export class SeqEquipeRepository implements IEquipeRepository {
-  async save (equipe: Equipe): Promise<void> {
-    await EquipeModel.create({
+  private usuarioRepository = new SeqUsuarioRepository()
+  async save (equipe: Equipe, idUser: number): Promise<void> {
+    const equipeData = await EquipeModel.create({
       ...equipe
     })
-  }
-
-  async findAll (): Promise<Equipe[]> {
-    const equipesModel = await EquipeModel.findAll()
-
-    const equipes = equipesModel.map(equipeModel => {
-      const equipe = new Equipe(equipeModel)
-      return equipe
+    await UsuarioEquipeModel.create({
+      idEquipe: equipeData.id,
+      idUser
     })
-
-    return equipes
   }
 
-  async findById (id: number): Promise<Equipe> {
+  async findAll (idUser: number): Promise<Equipe[]> {
+    const usuarioEquipesModel = await EquipeModel.findAll({
+      include: [
+        {
+          model: UsuarioModel,
+          as: 'usuarioEquipe',
+          through: { attributes: [] },
+          where: {
+            id: idUser
+          }
+        }
+      ]
+    })
+    const usuarioEquipes = usuarioEquipesModel.map(usuarioEquipeModel => {
+      const usuarioEquipe = new Equipe(usuarioEquipeModel)
+      return usuarioEquipe
+    })
+    return usuarioEquipes
+  }
+
+  async findById (idEquipe: number, idUser: number): Promise<Equipe> {
     const equipeModel = await EquipeModel.findOne({
+      include: [
+        {
+          model: UsuarioModel,
+          as: 'usuarioEquipe',
+          where: {
+            id: idUser
+          }
+        }
+      ],
       where: {
-        id
+        id: idEquipe
       }
     })
     if (!equipeModel) return null
@@ -52,5 +78,14 @@ export class SeqEquipeRepository implements IEquipeRepository {
         id
       }
     })
+  }
+
+  async update (equipe: Equipe, idUser: number): Promise<void> {
+    await EquipeModel.update({ ...equipe },
+      {
+        where: {
+          id: equipe.id
+        }
+      })
   }
 }

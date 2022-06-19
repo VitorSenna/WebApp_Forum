@@ -1,5 +1,6 @@
-import { Request, Response } from 'express'
+import { Request, Response, NextFunction } from 'express'
 import { TypedErrors } from '../../../main/errors-type/TypedErrors'
+import AuthMiddleware from '../../../main/middlewares/authMiddleware'
 import { Controller } from '../../../main/protocols/controller'
 import { ListUsuariosUseCase } from './ListUsuariosUseCase'
 

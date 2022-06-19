@@ -14,9 +14,9 @@ export class CreateEquipesUseCase implements UseCase {
 
     const equipe = new Equipe(data)
 
-    const existEquipe = await this.equipeReposiotry.findByName(equipe.nome)
+    const existEquipe = await this.equipeReposiotry.findByName(equipe.nome, data.idUser)
     if (existEquipe) throw new DataInUse('Nome')
 
-    await this.equipeReposiotry.save(equipe)
+    await this.equipeReposiotry.save(equipe, data.idUser)
   }
 }

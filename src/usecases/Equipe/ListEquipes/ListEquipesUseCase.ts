@@ -4,16 +4,18 @@ import { UseCase } from '../../../main/protocols/usecase'
 import { ListEquipesDTO } from './ListEquipesDTO'
 
 export class ListEquipesUseCase implements UseCase {
-  constructor (private equipesRepository: IEquipeRepository) {}
+  constructor (
+    private equipesRepository: IEquipeRepository) {}
 
-  async execute (): Promise<ListEquipesDTO[]> {
-    const equipes = await this.equipesRepository.findAll()
+  async execute (idUser: number): Promise<ListEquipesDTO[]> {
+    const usuarioEquipes = await this.equipesRepository.findAll(idUser)
 
-    return equipes.map(equipe => {
+    return usuarioEquipes.map(equipe => {
       return {
         id: equipe.id,
         nome: equipe.nome,
-        descricao: equipe.descricao
+        descricao: equipe.descricao,
+        dataCriacao: equipe.dataCriacao
       }
     })
   }

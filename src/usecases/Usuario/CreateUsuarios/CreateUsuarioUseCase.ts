@@ -4,6 +4,7 @@ import { IUsuarioRepository } from '../../../infra/seqInterfaces/IUsuarioReposit
 import { DataInUse } from '../../../main/errors-type/DataInUse'
 import { DataRequired } from '../../../main/errors-type/DataRequired'
 import { CreateUsuarioDTO } from './CreateUsuarioDTO'
+import bcrypt from 'bcryptjs'
 
 export class CreateUsuarioUseCase {
   constructor (private usuarioRepository: IUsuarioRepository) {}
@@ -21,6 +22,7 @@ export class CreateUsuarioUseCase {
     if (!data.nome) throw new DataRequired('Nome')
 
     const usuario = new Usuario(data)
+    usuario.senha = bcrypt.hashSync(usuario.senha, 8)
 
     await this.usuarioRepository.save(usuario)
   }

@@ -1,4 +1,8 @@
-import { DataTypes, Model, Optional, Sequelize } from 'sequelize'
+/* eslint-disable no-use-before-define */
+import { Association, DataTypes, Model, Optional, Sequelize } from 'sequelize'
+import { IdeiaModel } from './Ideia-model'
+import { UsuarioModel } from './Usuario-model'
+import { UsuarioEquipeModel } from './UsuarioEquipe-model'
 
 interface EquipeAttributes {
     id?: number
@@ -15,9 +19,11 @@ export class EquipeModel extends Model<EquipeAttributes, EquipeCreateAttributes>
   public descricao: string
   public dataCriacao: Date
 
-  // declare static associations: {
+  public readonly usuarios: UsuarioModel[]
 
-  // }
+  declare static associations: {
+    equipe: Association<EquipeModel, UsuarioEquipeModel>
+  }
 }
 
 export const init = (sequelize: Sequelize) => {
@@ -47,4 +53,17 @@ export const init = (sequelize: Sequelize) => {
   })
 }
 
-export const associate = () => {}
+export const associate = (sequelize: any) => {
+  EquipeModel.belongsToMany(UsuarioModel,
+    {
+      through: UsuarioEquipeModel,
+      foreignKey: 'idEquipe',
+      as: 'usuarioEquipe'
+    })
+
+  EquipeModel.hasMany(IdeiaModel,
+    {
+      foreignKey: 'id_equipe',
+      as: 'equipe'
+    })
+}

@@ -8,11 +8,12 @@ export class ListEquipesController implements Controller {
 
   async handle (req: Request, res: Response): Promise<Response> {
     try {
-      const equipes = await this.listEquipesUseCase.execute()
+      const equipes = await this.listEquipesUseCase.execute(req.idUser)
 
-      return res.status(200).json({ equipes })
+      return res.status(200).json(equipes)
     } catch (error) {
-      return res.status(500).json({ message: 'server error' })
+      console.log(error)
+      return res.status(500).json(error)
     }
   }
 }
