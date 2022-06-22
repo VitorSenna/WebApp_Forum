@@ -6,4 +6,5 @@ export type CreateUsuarioDTO = {
     username: string
     dataCadastro: Date
     senha: string
+    isPrivate: boolean
 }

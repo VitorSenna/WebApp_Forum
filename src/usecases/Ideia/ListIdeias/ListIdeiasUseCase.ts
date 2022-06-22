@@ -17,7 +17,7 @@ export class ListIdeiasUseCase implements UseCase {
   async execute (data: {idEquipe: number, idUser: number}): Promise<Ideia[]> {
     await this.verifyUserUseCase.execute(data.idUser)
 
-    const equipe = await this.equipeRepository.findById(data.idEquipe, data.idUser)
+    const equipe = await this.equipeRepository.findByIdOwner(data.idEquipe, data.idUser)
     if (!equipe) throw new DataNotFound('Equipe')
 
     const ideias = await this.ideiasRepository.findAll(data.idEquipe, data.idUser)

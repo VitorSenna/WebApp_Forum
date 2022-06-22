@@ -17,7 +17,7 @@ export class GetUsuariosByIdController implements Controller {
       return res.status(200).json(usuario)
     } catch (error) {
       console.log(error)
-      if (error instanceof TypedErrors) return res.status(400).json(error)
+      if (error instanceof TypedErrors) return res.status(400).json({ message: error.message })
       return res.status(500).json(error)
     }
   }

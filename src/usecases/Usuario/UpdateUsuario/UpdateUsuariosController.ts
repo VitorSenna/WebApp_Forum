@@ -9,13 +9,12 @@ export class UpdateUsuariosController implements Controller {
 
   async handle (req: Request, res: Response): Promise<Response> {
     try {
-      const id = Number(req.params.id)
-      if (!id) return res.status(400).json({ message: `invalid Param ${id}` })
-      await this.updateUsuarioUseCase.execute({ ...req.body, id })
+      const idUserLogin = req.idUser
+      await this.updateUsuarioUseCase.execute({ ...req.body, id: idUserLogin })
 
       return res.status(200).json({})
     } catch (error) {
-      if (error instanceof TypedErrors) return res.status(400).json({ error })
+      if (error instanceof TypedErrors) return res.status(400).json({ message: error.message })
       return res.status(500).json(error)
     }
   }

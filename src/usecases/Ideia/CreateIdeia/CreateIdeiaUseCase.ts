@@ -22,7 +22,7 @@ export class CreateIdeiaUseCase implements UseCase {
 
     const ideia = new Ideia(data)
 
-    const equipe = await this.equipeRepository.findById(data.idEquipe, data.idUser)
+    const equipe = await this.equipeRepository.findByIdOwner(data.idEquipe, data.idUser)
     if (!equipe) throw new DataNotFound('Equipe')
     ideia.equipe = equipe
 

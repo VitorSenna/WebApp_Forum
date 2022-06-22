@@ -11,6 +11,7 @@ interface UsuarioAttributes {
     sobrenome: string
     username: string
     senha: string
+    isPrivate: boolean
     dataCadastro: Date
 }
 
@@ -23,6 +24,7 @@ export class UsuarioModel extends Model<UsuarioAttributes, UsuarioCreateAttribut
   public sobrenome: string
   public username: string
   public senha: string
+  public isPrivate: boolean
   public dataCadastro: Date
 
   public readonly equipes: EquipeModel[]
@@ -59,6 +61,11 @@ export const init = (sequelize: Sequelize) => {
     senha: {
       type: DataTypes.STRING(100),
       field: 'senha'
+    },
+    isPrivate: {
+      type: DataTypes.BOOLEAN,
+      field: 'is_private',
+      defaultValue: false
     },
     dataCadastro: {
       type: DataTypes.DATEONLY,

@@ -10,7 +10,8 @@ export class SeqUsuarioRepository implements IUsuarioRepository {
       nome: usuario.nome,
       senha: usuario.senha,
       sobrenome: usuario.sobrenome,
-      username: usuario.username
+      username: usuario.username,
+      isPrivate: usuario.isPrivate
     })
 
     return !!data

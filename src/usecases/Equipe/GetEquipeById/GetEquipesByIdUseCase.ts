@@ -8,7 +8,7 @@ export class GetEquipesByIdUseCase implements UseCase {
   constructor (private equipesRepository: IEquipeRepository) {}
 
   async execute (data: {idEquipe: number, idUser: number}): Promise<GetEquipeByIdDTO> {
-    const equipe = await this.equipesRepository.findById(data.idEquipe, data.idUser)
+    const equipe = await this.equipesRepository.findByIdOwner(data.idEquipe, data.idUser)
 
     if (!equipe) throw new DataNotFound('Equipe')
 

@@ -5,5 +5,6 @@ export type UpdateUsuarioDTO = {
     sobrenome: string
     username: string
     dataCadastro: Date
+    isPrivate: boolean
     senha: string
 }

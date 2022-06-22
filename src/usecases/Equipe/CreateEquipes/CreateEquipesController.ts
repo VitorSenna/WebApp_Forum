@@ -13,7 +13,7 @@ export class CreateEquipesController implements Controller {
 
       return res.status(201).json({ message: 'ok' })
     } catch (error) {
-      if (error instanceof TypedErrors) return res.status(400).json(error)
+      if (error instanceof TypedErrors) return res.status(400).json({ message: error.message })
       return res.status(500).json(error)
     }
   }

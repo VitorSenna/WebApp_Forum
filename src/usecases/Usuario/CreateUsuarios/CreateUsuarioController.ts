@@ -9,12 +9,11 @@ export class CreateUsuarioController implements Controller {
 
   async handle (req: Request, res: Response): Promise<Response> {
     try {
-      // console.log(req.usuario.id)
       await this.createUsuarioUseCase.execute(req.body)
       return res.status(201).json({})
     } catch (error) {
       console.log(error)
-      if (error instanceof TypedErrors) return res.status(400).json(error)
+      if (error instanceof TypedErrors) return res.status(400).json({ message: error.message })
       return res.status(500).json(error)
     }
   }

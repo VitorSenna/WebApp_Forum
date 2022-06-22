@@ -1,5 +1,6 @@
 /* eslint-disable no-useless-constructor */
 import { Request, Response } from 'express'
+import { TypedErrors } from '../../../main/errors-type/TypedErrors'
 import { Controller } from '../../../main/protocols/controller'
 import { ListEquipesUseCase } from './ListEquipesUseCase'
 
@@ -12,7 +13,7 @@ export class ListEquipesController implements Controller {
 
       return res.status(200).json(equipes)
     } catch (error) {
-      console.log(error)
+      if (error instanceof TypedErrors) return res.status(400).json({ message: error.message })
       return res.status(500).json(error)
     }
   }

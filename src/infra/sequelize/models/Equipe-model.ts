@@ -6,18 +6,22 @@ import { UsuarioEquipeModel } from './UsuarioEquipe-model'
 
 interface EquipeAttributes {
     id?: number
+    idUserOwner: number
     nome: string
     descricao: string
     dataCriacao: Date
+    isPrivate: boolean
 }
 
 export interface EquipeCreateAttributes extends Optional<EquipeAttributes, 'id'> { }
 
 export class EquipeModel extends Model<EquipeAttributes, EquipeCreateAttributes> implements EquipeAttributes {
   public id?: number
+  public idUserOwner: number
   public nome: string
   public descricao: string
   public dataCriacao: Date
+  public isPrivate: boolean
 
   public readonly usuarios: UsuarioModel[]
 
@@ -34,6 +38,11 @@ export const init = (sequelize: Sequelize) => {
       autoIncrement: true,
       field: 'id_equipe'
     },
+    idUserOwner: {
+      type: DataTypes.INTEGER,
+      field: 'id_user_owner',
+      allowNull: false
+    },
     nome: {
       type: DataTypes.STRING(50),
       field: 'nome'
@@ -45,6 +54,11 @@ export const init = (sequelize: Sequelize) => {
     dataCriacao: {
       type: DataTypes.DATEONLY,
       field: 'data_criacao'
+    },
+    isPrivate: {
+      type: DataTypes.BOOLEAN,
+      field: 'is_private',
+      defaultValue: false
     }
   },
   {

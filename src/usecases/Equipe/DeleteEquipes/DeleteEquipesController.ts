@@ -16,8 +16,8 @@ export class DeleteEquipesController implements Controller {
 
       return res.status(200).json({})
     } catch (error) {
-      if (error instanceof TypedErrors) return res.status(400).json(error)
-      return res.status(500).json({ message: 'server error' })
+      if (error instanceof TypedErrors) return res.status(400).json({ message: error.message })
+      return res.status(500).json(error)
     }
   }
 }

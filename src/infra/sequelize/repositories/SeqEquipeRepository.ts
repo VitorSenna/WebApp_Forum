@@ -1,15 +1,15 @@
 import { Equipe } from '../../../entities/Equipe'
+import { Usuario } from '../../../entities/Usuario'
 import { IEquipeRepository } from '../../seqInterfaces/IEquipeRepository'
 import { EquipeModel } from '../models/Equipe-model'
 import { UsuarioModel } from '../models/Usuario-model'
 import { UsuarioEquipeModel } from '../models/UsuarioEquipe-model'
-import { SeqUsuarioRepository } from './SeqUsuarioRepository'
 
 export class SeqEquipeRepository implements IEquipeRepository {
-  private usuarioRepository = new SeqUsuarioRepository()
   async save (equipe: Equipe, idUser: number): Promise<void> {
     const equipeData = await EquipeModel.create({
-      ...equipe
+      ...equipe,
+      idUserOwner: idUser
     })
     await UsuarioEquipeModel.create({
       idEquipe: equipeData.id,
@@ -37,19 +37,11 @@ export class SeqEquipeRepository implements IEquipeRepository {
     return usuarioEquipes
   }
 
-  async findById (idEquipe: number, idUser: number): Promise<Equipe> {
+  async findByIdOwner (idEquipe: number, idUser: number): Promise<Equipe> {
     const equipeModel = await EquipeModel.findOne({
-      include: [
-        {
-          model: UsuarioModel,
-          as: 'usuarioEquipe',
-          where: {
-            id: idUser
-          }
-        }
-      ],
       where: {
-        id: idEquipe
+        id: idEquipe,
+        idUserOwner: idUser
       }
     })
     if (!equipeModel) return null
@@ -87,5 +79,46 @@ export class SeqEquipeRepository implements IEquipeRepository {
           id: equipe.id
         }
       })
+  }
+
+  async addUserToEquipe (usuario: Usuario, idEquipe: number): Promise<void> {
+    await UsuarioEquipeModel.create({
+      idEquipe,
+      idUser: usuario.id
+    })
+  }
+
+  async userAlreadyRegistered (usuario: Usuario, idEquipe: number): Promise<boolean> {
+    const data = await UsuarioEquipeModel.findOne({
+      where: {
+        idUser: usuario.id,
+        idEquipe
+      }
+    })
+
+    return !!data
+  }
+
+  async findAllUsersByEquipe (idEquipe: number, idUser: number): Promise<Usuario[]> {
+    const usersData = await UsuarioModel.findAll({
+      include: [
+        {
+          model: EquipeModel,
+          as: 'equipe',
+          through: { attributes: [] },
+          where: {
+            id: idEquipe
+          }
+        }
+      ]
+    })
+
+    const users = usersData.map(userData => {
+      const user = new Usuario(userData)
+
+      return user
+    })
+
+    return users
   }
 }

@@ -4,5 +4,6 @@ email: string,
 nome: string,
 sobrenome: string,
 username: string,
-dataCadastro: string
+dataCadastro: Date,
+isPrivate: boolean
 }
